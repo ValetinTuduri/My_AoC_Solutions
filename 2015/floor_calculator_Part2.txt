@@ -1,0 +1,58 @@
+#include <iostream>
+#include <stdio.h>
+#include <fstream>
+
+using namespace std;
+
+int main(int argc, char *argv[])
+{
+   if(argc > 1)
+   {
+
+        string file_name = argv[1];
+        ifstream file;
+        int floor = 0;
+        int pos = 0;
+        file.open(file_name.c_str());
+
+        if(!file.is_open())
+        {
+          cout<<"Error: Impossible to open file"<<endl;
+        }
+        else
+        {
+            char c;
+
+
+            while(!file.eof() && floor != -1)
+            {
+
+                if(c == '(')
+                {
+                    floor++;
+                    pos++;
+
+                }
+
+                if(c == ')')
+                {
+                   floor--;
+                   pos++;
+
+                }
+                file>>c;
+
+
+            }
+
+        }
+
+        cout<<"Floor -1 at position: "<<pos<<endl;
+
+   }
+   else
+   {
+       cout<<"Error: Parameters needed."<<endl;
+   }
+    return 0;
+}
