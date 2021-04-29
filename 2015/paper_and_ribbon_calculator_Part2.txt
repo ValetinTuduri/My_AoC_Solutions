@@ -1,0 +1,77 @@
+#include <iostream>
+#include <stdio.h>
+#include <fstream>
+
+using namespace std;
+
+int calculate_ribbon(int &l,int &w,int &h)
+{
+    int side1,side2;
+
+    if(l < w)
+    {
+        side1 = l;
+        if(w < h)
+            side2 = w;
+        else
+            side2 = h;
+
+    }
+    else
+    {
+        side1 = w;
+        if(l < h)
+            side2 = l;
+        else
+            side2 = h;
+    }
+
+    int cubic = l*w*h;
+
+    int total_ribbon = side1*2 + side2*2 + cubic;
+
+    return total_ribbon;
+}
+
+
+int main(int argc, char *argv[])
+{
+   if(argc > 1)
+   {
+
+        string file_name = argv[1];
+        ifstream file;
+
+        file.open(file_name.c_str());
+
+        int l,w,h;
+        int total = 0;
+        char aux;
+
+        if(!file.is_open())
+        {
+          cout<<"Error: Impossible to open file"<<endl;
+        }
+        else
+        {
+            while(!file.eof())
+            {
+                file>>l;
+                file>>aux;
+                file>>w;
+                file>>aux;
+                file>>h;
+
+                total += calculate_ribbon(l,w,h);
+            }
+        }
+
+        cout<<"We need "<<total<<" feets of ribbon"<<endl;
+
+   }
+   else
+   {
+       cout<<"Error: Parameters needed."<<endl;
+   }
+    return 0;
+}
