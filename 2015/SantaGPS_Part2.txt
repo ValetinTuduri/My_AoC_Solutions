@@ -1,0 +1,166 @@
+#include <iostream>
+#include <stdio.h>
+#include <fstream>
+
+#include <vector>
+
+using namespace std;
+
+
+void travel(int &x,int &y,char direction)
+    {
+        switch (direction)
+        {
+            case '^':
+            y++;
+            break;
+            case 'v':
+            y--;
+            break;
+            case '>':
+            x++;
+            break;
+            case '<':
+            x--;
+            break;
+        }
+    }
+
+bool checkHouse(vector<char> Santapath,vector<char> RobotPath,int pos_x,int pos_y)
+    {
+        unsigned int contador = 0;
+        int auxPos_x = 0;
+        int auxPos_y = 0;
+        bool sameHouse = false;
+
+        while(contador < Santapath.size() && !sameHouse)
+
+        {
+
+            if(pos_x == auxPos_x && pos_y == auxPos_y)
+            {
+                sameHouse = true;
+            }
+
+            travel(auxPos_x,auxPos_y,Santapath[contador]);
+
+            contador++;
+
+        }
+        contador = 0;
+        auxPos_x = 0;
+        auxPos_y = 0;
+
+        while(contador < RobotPath.size() && !sameHouse)
+        {
+
+            if(pos_x == auxPos_x && pos_y == auxPos_y)
+            {
+                sameHouse = true;
+            }
+
+            travel(auxPos_x,auxPos_y,RobotPath[contador]);
+
+
+            contador++;
+
+        }
+
+        return sameHouse;
+    }
+
+int main(int argc, char *argv[])
+{
+
+    vector<char> SantaPath;
+    vector<char> RobotPath;
+    char n;
+    int pos_x = 0;
+    int pos_y = 0;
+    int pos_xS = 0;
+    int pos_yS = 0;
+    int pos_xR = 0;
+    int pos_yR = 0;
+    int nHouse = 1;
+    bool turn = true;
+
+
+
+   if(argc > 1)
+   {
+
+        string file_name = argv[1];
+        ifstream file;
+
+        file.open(file_name.c_str());
+
+
+
+        if(!file.is_open())
+        {
+          cout<<"Error: Impossible to open file"<<endl;
+        }
+        else
+        {
+            file>>n;
+
+
+            while(!file.eof())
+            {
+
+
+
+               if(turn)
+               {
+                   travel(pos_xS,pos_yS,n);
+                   pos_x = pos_xS;
+                   pos_y = pos_yS;
+
+               }
+               else
+               {
+                   travel(pos_xR,pos_yR,n);
+                   pos_x = pos_xR;
+                   pos_y = pos_yR;
+
+               }
+
+
+               if(!checkHouse(SantaPath,RobotPath,pos_x,pos_y))
+               {
+                   nHouse++;
+               }
+
+
+
+               if(turn)
+               {
+                   SantaPath.push_back(n);
+                   turn = false;
+               }
+               else
+               {
+                    RobotPath.push_back(n);
+                    turn = true;
+               }
+
+               file>>n;
+
+
+            }
+
+
+            cout<<"Santa visited "<<nHouse<<" new houses"<<endl;
+
+
+        }
+
+
+
+   }
+   else
+   {
+       cout<<"Error: Parameters needed."<<endl;
+   }
+    return 0;
+}

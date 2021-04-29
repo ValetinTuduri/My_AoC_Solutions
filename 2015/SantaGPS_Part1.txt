@@ -1,0 +1,111 @@
+#include <iostream>
+#include <stdio.h>
+#include <fstream>
+
+#include <vector>
+
+using namespace std;
+
+void travel(int &x,int &y,char direction)
+    {
+        switch (direction)
+        {
+            case '^':
+            y++;
+            break;
+            case 'v':
+            y--;
+            break;
+            case '>':
+            x++;
+            break;
+            case '<':
+            x--;
+            break;
+        }
+    }
+
+bool checkHouse(vector<char> path,int pos_x,int pos_y)
+    {
+        unsigned int contador = 0;
+        int auxPos_x = 0;
+        int auxPos_y = 0;
+        bool sameHouse = false;
+
+        while(contador < path.size() && !sameHouse)
+        {
+
+
+
+            if(pos_x == auxPos_x && pos_y == auxPos_y)
+            {
+                sameHouse = true;
+            }
+
+            travel(auxPos_x,auxPos_y,path[contador]);
+
+            contador++;
+
+        }
+
+        return sameHouse;
+    }
+
+int main(int argc, char *argv[])
+{
+
+    vector<char> path;
+    char n;
+    int pos_x = 0;
+    int pos_y = 0;
+    int nHouse = 1;
+
+
+
+   if(argc > 1)
+   {
+
+        string file_name = argv[1];
+        ifstream file;
+
+        file.open(file_name.c_str());
+
+
+
+        if(!file.is_open())
+        {
+          cout<<"Error: Impossible to open file"<<endl;
+        }
+        else
+        {
+            while(!file.eof())
+            {
+
+               file>>n;
+               travel(pos_x,pos_y,n);
+
+               if(!checkHouse(path,pos_x,pos_y))
+               {
+                   nHouse++;
+               }
+
+               path.push_back(n);
+
+
+
+
+            }
+
+
+            cout<<"Santa visited "<<nHouse<<" new houses"<<endl;
+
+        }
+
+
+   }
+   else
+   {
+       cout<<"Error: Parameters needed."<<endl;
+   }
+    return 0;
+}
