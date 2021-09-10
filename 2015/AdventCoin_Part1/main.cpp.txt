@@ -1,0 +1,71 @@
+#include <iostream>
+#include <string>
+#include <sstream>
+
+#include "md5.h"
+
+using namespace std;
+
+
+void findMD5(string auxkey)
+{
+    bool found = false;
+
+    int counter = 0;
+
+    while(!found)
+    {
+        found = true;
+
+        stringstream ss;
+        string auxiliarString;
+
+        ss<<counter;
+        ss>>auxiliarString;
+
+        string definitiveKey = auxkey + auxiliarString;
+
+
+        string hashcode = md5(definitiveKey);
+
+        char auxC;
+
+        for(int i = 0; i < 5; i++)
+        {
+            auxC = hashcode.at(i);
+
+            if(auxC != '0')
+            {
+                found = false;
+            }
+
+        }
+
+
+        if(found)
+        {
+             cout <<"The hash of "<<definitiveKey<<" is "<<hashcode;
+        }
+
+
+        counter++;
+
+
+    }
+
+
+
+}
+
+int main()
+{
+    string keycode;
+
+    cout<<"Introduce your key:"<<endl;
+
+    cin>>keycode;
+
+    findMD5(keycode);
+
+    return 0;
+}
